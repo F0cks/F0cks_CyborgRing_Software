@@ -3,13 +3,12 @@
 #include <avr/sleep.h>
 
 // Clock is 6,4MHz / 8 : 800kHz
-// -U lfuse:w:0x43:m -U hfuse:w:0xdf:m -U efuse:w:0xff:m 
 
 volatile uint8_t  switchInc;
 volatile uint16_t timerTick;
 
 /* Light a specific led (turn OFF others) */
-void lightLED(int8_t ledNumber)
+void lightLED(uint8_t ledNumber)
 {
     switch(ledNumber)
     {
@@ -48,8 +47,9 @@ void lightLED(int8_t ledNumber)
             DDRB  |= ( (1 << DDB2) | (1 << DDB3) ); // Set PB2 and PB3 as outputs
             PORTB |= (1 << PORTB3);                 // PB3 is sourcing VCC
             break;
+        case 255:
         default:
-            DDRB = 0x00; // Set whole PORTB as input
+            DDRB  = 0x00; // Set whole PORTB as input
             PORTB = 0x00; // Prepare whole PORTB to sink GND
     }
 }
@@ -69,8 +69,7 @@ int main(void)
     /******************/
     /* Configuration  */
     /******************/
-
-    int8_t i  = 0;
+    uint8_t i = 0;
     switchInc = 0;
     timerTick = 0;
 
